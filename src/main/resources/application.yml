@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      uri: mongodb://root:r00t@localhost:27017
+      database: retro
+axon:
+  axonserver:
+    enabled: false
