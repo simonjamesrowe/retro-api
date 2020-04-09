@@ -41,10 +41,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-	implementation("org.axonframework.extensions.kafka:axon-kafka:4.0-RC3")
+	implementation("org.axonframework.extensions.kafka:axon-kafka-spring-boot-starter:4.0-RC3")
 	implementation("org.axonframework.extensions.mongo:axon-mongo:4.3")
 	implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka")
 	implementation("io.micrometer:micrometer-registry-prometheus:1.4.1")
+	implementation("io.micrometer:micrometer-core:1.4.1")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
