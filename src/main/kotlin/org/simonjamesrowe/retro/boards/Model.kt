@@ -3,7 +3,11 @@ package org.simonjamesrowe.retro.boards
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
+import org.axonframework.modelling.command.AggregateLifecycle.apply
 import org.axonframework.spring.stereotype.Aggregate
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 data class CreateBoardCommand(val name: String,
                               val createdBy: String,
@@ -22,6 +26,11 @@ class Board {
     lateinit var createdBy : String
     var lanes: MutableMap<String, List<Card>> = HashMap()
 
+    constructor()
+
+    constructor(id: String) {
+        this.id = id
+    }
 
     @EventSourcingHandler
     fun on(boardCreatedEvent: BoardCreatedEvent) {

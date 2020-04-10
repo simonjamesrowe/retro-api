@@ -1,12 +1,16 @@
 package org.simonjamesrowe.retro
 
 import com.mongodb.MongoClient
+import org.axonframework.eventhandling.EventBus
+import org.axonframework.eventsourcing.EventSourcingRepository
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine
 import org.axonframework.eventsourcing.eventstore.EventStore
 import org.axonframework.extensions.mongo.DefaultMongoTemplate
 import org.axonframework.extensions.mongo.eventsourcing.eventstore.MongoEventStorageEngine
+import org.axonframework.modelling.command.Repository
 import org.axonframework.spring.config.AxonConfiguration
+import org.simonjamesrowe.retro.boards.Board
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
@@ -54,5 +58,10 @@ class EventSourcingConfiguration {
                 .snapshotEventsCollectionName("retro_snapshots")
                 .build())
                 .build()
+    }
+
+    @Bean
+    fun boardRepository(eventStore: EventStore) : Repository<Board> {
+        return EventSourcingRepository.builder(Board::class.java).eventStore(eventStore).build()
     }
 }
