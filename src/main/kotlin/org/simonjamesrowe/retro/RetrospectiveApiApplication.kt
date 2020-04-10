@@ -54,11 +54,12 @@ class EventSourcingConfiguration {
     }
 
     @Bean
-    fun storageEngine(client: MongoClient?, eventSerializer: Serializer): EventStorageEngine? {
+    fun storageEngine(client: MongoClient, eventSerializer: Serializer): EventStorageEngine? {
         return MongoEventStorageEngine.builder().mongoTemplate(DefaultMongoTemplate.builder()
-                .mongoDatabase(client)
+                .mongoDatabase(client.getDatabase("retro"))
                 .domainEventsCollectionName("retro_events")
                 .snapshotEventsCollectionName("retro_snapshots")
+                .trackingTokensCollectionName("retro_tracking_tokens")
                 .build())
                 .eventSerializer(eventSerializer)
                 .build()

@@ -19,15 +19,17 @@ axon:
       security.protocol: PLAINTEXT
 
     publisher:
-      confirmation-mode: transactional
+      confirmation-mode: wait_for_ack
 
     producer:
-      transaction-id-prefix: kafka-sample
-      retries: 0
       event-processor-mode: subscribing
       # For additional unnamed properties, add them to the `properties` map like so
       #properties:
       #  some-key: [some-value]
+      acks: 1
+
+
+
 
     fetcher:
       poll-timeout: 3000
