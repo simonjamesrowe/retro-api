@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono
 class BoardController(val commandGateway: CommandGateway) {
 
     @PostMapping
-    suspend fun create(@RequestBody createBoardCommand: CreateBoardCommand) : String {
-        var result = GlobalScope.async {commandGateway.sendAndWait<String>(createBoardCommand)}
+    suspend fun create(@RequestBody createBoardCommand: CreateBoardCommand) : Board {
+        var result = GlobalScope.async {commandGateway.sendAndWait<String>(createBoardCommand) as Board}
         return result.await()
     }
 

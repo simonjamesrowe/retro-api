@@ -9,6 +9,8 @@ axon:
     enabled: false
   serializer:
     events: jackson
+    messages: jackson
+    general: jackson
   kafka:
     bootstrap-servers: localhost:9092
     client-id: retro-api

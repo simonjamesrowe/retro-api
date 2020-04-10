@@ -8,8 +8,11 @@ import org.axonframework.eventsourcing.eventstore.EventStorageEngine
 import org.axonframework.eventsourcing.eventstore.EventStore
 import org.axonframework.extensions.mongo.DefaultMongoTemplate
 import org.axonframework.extensions.mongo.eventsourcing.eventstore.MongoEventStorageEngine
+import org.axonframework.modelling.command.Aggregate
 import org.axonframework.modelling.command.Repository
+import org.axonframework.serialization.Serializer
 import org.axonframework.spring.config.AxonConfiguration
+import org.axonframework.springboot.SerializerProperties
 import org.simonjamesrowe.retro.boards.Board
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -51,17 +54,29 @@ class EventSourcingConfiguration {
     }
 
     @Bean
-    fun storageEngine(client: MongoClient?): EventStorageEngine? {
+    fun storageEngine(client: MongoClient?, eventSerializer: Serializer): EventStorageEngine? {
         return MongoEventStorageEngine.builder().mongoTemplate(DefaultMongoTemplate.builder()
                 .mongoDatabase(client)
                 .domainEventsCollectionName("retro_events")
                 .snapshotEventsCollectionName("retro_snapshots")
                 .build())
+                .eventSerializer(eventSerializer)
                 .build()
     }
 
     @Bean
     fun boardRepository(eventStore: EventStore) : Repository<Board> {
         return EventSourcingRepository.builder(Board::class.java).eventStore(eventStore).build()
+    }
+}
+
+class AggregateUtils {
+
+    companion object {
+        fun <T> aggregateRoot (aggregate: Aggregate<T>) : T {
+            var t : T? = null
+            aggregate.execute { t = it }
+            return t!!
+        }
     }
 }
