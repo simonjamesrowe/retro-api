@@ -4,6 +4,31 @@ spring:
       authentication-database: admin
       uri: mongodb://root:r00t@localhost:27017
       database: retro
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: retro_events
+          group: retro-api-spring-cloud-stream
+          consumer:
+            useNativeDecoding: false
+            batchMode: true
+      kafka:
+        binder:
+          brokers: ${axon.kafka.bootstrap-servers}
+          consumer-properties:
+            value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        bindings:
+          default:
+            consumer:
+              # do not move the commit forward when there's an error
+              autoCommitOnError: false
+              # do commits when messages appear to have been processed
+              autoCommitOffset: true
+              # on first EVER start up (before the consumer group is even created), go to the earliest message
+              startOffset: latest
+              # treat the headers as bytes
+
 axon:
   axonserver:
     enabled: false
@@ -24,12 +49,9 @@ axon:
     producer:
       event-processor-mode: subscribing
       # For additional unnamed properties, add them to the `properties` map like so
-      #properties:
-      #  some-key: [some-value]
+      properties:
+        some-key: [some-value]
       acks: 1
-
-
-
 
     fetcher:
       poll-timeout: 3000
@@ -41,3 +63,6 @@ axon:
       # For additional unnamed properties, add them to the `properties` map like so
       #properties:
       #  some-key: [some-value]
+logging:
+  level:
+    org.axonframework: TRACE
