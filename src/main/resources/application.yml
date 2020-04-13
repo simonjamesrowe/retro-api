@@ -30,6 +30,7 @@ spring:
               # treat the headers as bytes
 
 axon:
+  
   axonserver:
     enabled: false
   serializer:
@@ -63,6 +64,4 @@ axon:
       # For additional unnamed properties, add them to the `properties` map like so
       #properties:
       #  some-key: [some-value]
-logging:
-  level:
-    org.axonframework: TRACE
+
